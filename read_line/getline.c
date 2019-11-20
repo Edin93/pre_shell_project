@@ -4,10 +4,12 @@ int main(void)
 {
 	char *lineptr = NULL;
 	size_t s = 0;
+	ssize_t r;
 
 	printf("$ ");
-	getline(&lineptr, &s, stdin);
+	r = getline(&lineptr, &s, stdin);
 	printf("%s", lineptr);
+	printf("getline result is: %zu\n", r);
 	free(lineptr);
 	return (0);
 }
