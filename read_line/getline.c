@@ -2,11 +2,12 @@
 #include <stdlib.h>
 int main(void)
 {
-	char *lineptr;
-	size_t s = 10;
+	char *lineptr = NULL;
+	size_t s = 0;
 
 	printf("$ ");
 	getline(&lineptr, &s, stdin);
 	printf("%s", lineptr);
+	free(lineptr);
 	return (0);
 }
