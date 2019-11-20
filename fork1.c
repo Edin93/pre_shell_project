@@ -2,17 +2,27 @@
 #include <unistd.h>
 int main(void)
 {
-	pid_t parentId = getpid();
-	pid_t childId;
+	pid_t parent, child, chachild;
 
-	printf("parent process id = %u\n", parentId);
-	childId = fork();
-	if (childId == -1)
+	parent = getpid();
+	printf("%u parent ID\n", parent);
+
+	child = fork();
+	if (child == -1)
 	{
-		perror("ERROR\n");
+		perror("Error\n");
 		return (1);
 	}
-	printf("child process id = %u\n", childId);
-	printf("CHECK AGAIN, parent process id = %u\n", parentId);
+	chachild = fork();
+	if (chachild == -1)
+	{
+		perror("Chachild Error\n");
+		return (1);
+	}
+
+	printf("%u chachild ID\n", chachild);
+
+	printf("%u child ID\n", child);
+
 	return (0);
 }
