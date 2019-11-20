@@ -23,7 +23,7 @@ int main(void)
 		else
 		{
 			printf("Error at status: %d\n", status);
-			return (1);
+			exit (EXIT_FAILURE);
 		}
 	}
 	return (0);
