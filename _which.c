@@ -52,6 +52,7 @@ int main(int ac, char *av[])
 				break;
 			}
 			token = strtok(NULL, ":");
+			free(tmp);
 		}
 	}
         return (0);
