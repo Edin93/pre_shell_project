@@ -79,7 +79,7 @@ char *_getenv(const char *name)
 	return (envar);
 }
 
-size_t print_list(const dir *h)
+size_t print_list(dir *h)
 {
 	size_t s = 0;
 	char *str;
@@ -107,7 +107,7 @@ int main (void)
 	char *path;
 	char *token;
 	dir *node, *next_node;
-	const dir *head;
+	dir *head;
 
 	path = _getenv("PATH");
 	token = strtok(path, ":");
