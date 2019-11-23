@@ -106,22 +106,22 @@ int main (void)
 {
 	char *path;
 	char *token;
-	dir **head, *node, *next_node;
+	dir *node, *next_node;
+	const dir *head;
 
 	path = _getenv("PATH");
 	token = strtok(path, ":");
 	node = malloc(sizeof(dir));
-	head = &node;
+	node->directory_path = strdup(token);
+	head = node;
 	if (head == NULL || node == NULL)
 	{
 		free(node);
 		exit (1);
 	}
-	node->directory_path = strdup(token);
 	token = strtok(NULL, ":");
 	while (token)
 	{
-		printf("token = %s\n", node->directory_path);
 		next_node = malloc(sizeof(dir));
 		if (next_node == NULL)
 			exit (1);
@@ -131,8 +131,7 @@ int main (void)
 		token = strtok(NULL, ":");
 	}
 	node->next = NULL;
-
-	/* print_list(*head); */
+	print_list(head);
 
 	return (0);
 }
