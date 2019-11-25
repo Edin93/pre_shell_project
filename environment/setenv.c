@@ -7,6 +7,8 @@
 
 extern char **environ;
 
+int _setenv(const char *name, const char *value, int overwrite);
+
 struct dir
 {
 	char *name;
@@ -103,11 +105,36 @@ size_t print_list(dir *h)
 	return (s);
 }
 
-int main (void)
+char *concatconst(const char *s1, const char *s2)
+{
+        int len1 = 0, len2 = 0, lens_sum, i, j;
+        char *str;
+
+        while (s1[len1] != '\0')
+                len1++;
+        while (s2[len2] != '\0')
+                len2++;
+
+        lens_sum = len1 + len2;
+        str = malloc(sizeof(char) * (lens_sum + 1));
+
+        if (str == NULL)
+                exit (1);
+
+        for (i = 0; i < lens_sum; i++)
+        {
+		if (i < len1)
+			str[i] = s1[i];
+		else
+			str[i] = s2[i - len1];
+        }
+	str[lens_sum] = '\0';
+        return (str);
+}
+
+int _setenv(const char *name, const char *value, int overwrite)
 {
 	char *env_var;
-	dir *node, *next_node;
-	dir *head;
 	int ei;
 
 	ei = 0;
@@ -115,25 +142,33 @@ int main (void)
 
 	while (env_var != NULL)
 	{
-		node = malloc(sizeof(dir));
-		node->name = strdup(strtok(env_var, "="));
-		node->value = strdup(strtok(NULL, "="));
-		if (node == NULL)
+		if (strcmp(name, env_var) == 0)
 		{
-			exit (1);
+			if (overwrite != 0)
+				*(environ + ei) = concatconst(concatconst(name, "="), value);
+			return (0);
 		}
-		if (ei == 0)
-			head = node;
-		next_node = malloc(sizeof(dir));
-		if (next_node == NULL)
-			exit (1);
-		node->next = next_node;
-		node = next_node;
-		ei++;
-		env_var = *(environ + ei);
+		else
+		{
+			ei++;
+			env_var = *(environ + ei);
+		}
 	}
-	node->next = NULL;
-	print_list(head);
+	if (env_var == NULL)
+	{
+		*(environ + ei) = concatconst(concatconst(name, "="), value);
+		ei++;
+		*(environ + ei) = NULL;
+		return (0);
+	}
+	return (-1);
+}
 
+int main (void)
+{
+	int r;
+
+	r = _setenv("HOUSSEM", "EDDINE BEN KHALIFA", 1);
+	printf("r = %d\n", r);
 	return (0);
 }
