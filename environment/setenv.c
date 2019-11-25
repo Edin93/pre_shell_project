@@ -40,7 +40,7 @@ int _strlen(char *s)
  * @s2: string
  * Return: integer
  */
-int _strcmp(char *s1, char *s2)
+int _strcmp(const char *s1, const char *s2)
 {
 	int s1len = 0;
 	int s2len = 0;
@@ -142,7 +142,7 @@ int _setenv(const char *name, const char *value, int overwrite)
 
 	while (env_var != NULL)
 	{
-		if (strcmp(name, env_var) == 0)
+		if (_strcmp(name, env_var) == 0)
 		{
 			if (overwrite != 0)
 				*(environ + ei) = concatconst(concatconst(name, "="), value);
@@ -161,14 +161,67 @@ int _setenv(const char *name, const char *value, int overwrite)
 		*(environ + ei) = NULL;
 		return (0);
 	}
-	return (-1);
+	return (1);
+}
+
+int _unsetenv(const char *name)
+{
+	int i;
+
+	i = 0;
+	while (environ[i] != NULL)
+	{
+		if (_strcmp(name, environ[i]) == 0)
+		{
+			while (environ[i + 1])
+			{
+				environ[i] = environ[i + 1];
+				i++;
+			}
+			environ[i] = NULL;
+			break;
+		}
+		else
+			i++;
+	}
+	return (1);
 }
 
 int main (void)
 {
 	int r;
-
-	r = _setenv("HOUSSEM", "EDDINE BEN KHALIFA", 1);
+	int i;
+/*
+	r = _setenv("HOUSSEM", "edin93", 1);
 	printf("r = %d\n", r);
+	r = _setenv("MATADOR", "nadal", 1);
+	printf("r = %d\n", r);
+	r = _setenv("sister", "khadija", 1);
+	printf("r = %d\n", r);
+	r = _setenv("mother", "saida", 1);
+	printf("r = %d\n", r);
+	r = _setenv("father", "lassaad", 1);
+	printf("r = %d\n", r);
+*/
+/*	i = 0;
+	while (environ[i])
+		printf("%s\n", environ[i]), i++;
+
+	r = _unsetenv("HOUSSEM");
+	printf("r = %d\n", r);
+*/
+
+	i = 0;
+	while (environ[i])
+		printf("%s\n", environ[i]), i++;
+
+	printf("---------------------------------------------------\n");
+
+	_unsetenv("HOME");
+
+	i = 0;
+	while (environ[i])
+		printf("%s\n", environ[i]), i++;
+
 	return (0);
 }
